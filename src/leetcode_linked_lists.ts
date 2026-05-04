@@ -32,7 +32,7 @@ function listToArray(head: ListNode | null): number[] {
   return result;
 }
 
-/* Problem 1 */
+/* Problem 1: 2095. Delete the Middle Node of a Linked List */
 function deleteMiddle(head: ListNode | null): ListNode | null {
   if (!head || !head.next) return null;
 
@@ -53,7 +53,7 @@ function deleteMiddle(head: ListNode | null): ListNode | null {
   return head;
 }
 
-/* Problem 2 */
+/* Problem 2: 328. Odd Even Linked List */
 function oddEvenList(head: ListNode | null): ListNode | null {
   if (!head || !head.next) return head;
 
@@ -74,6 +74,7 @@ function oddEvenList(head: ListNode | null): ListNode | null {
   return head;
 }
 
+/* Problem 3: 206. Reverse Linked List */
 function reverseList(head: ListNode | null) {
   let prev: ListNode | null = null;
   let current = head;
@@ -88,9 +89,45 @@ function reverseList(head: ListNode | null) {
   return prev;
 }
 
-/* Test Cases */
-const test1 = buildList([1, 2, 3, 4, 5]);
-console.log(listToArray(reverseList(test1)));
+/* Problem 4: 2130. Maximum Twin Sum of a Linked List */
+function pairSum(head: ListNode | null) {
+  if (!head) return 0;
 
-const test2 = buildList([2, 1, 3, 5, 6, 4, 7]);
-console.log(listToArray(reverseList(test2)));
+  // find middle
+  let slow: ListNode | null = head;
+  let fast: ListNode | null = head;
+
+  while (fast && fast.next) {
+    slow = slow!.next;
+    fast = fast.next.next
+  }
+
+  // reverse middle 
+  let prev = null;
+  let current = slow;
+
+  while(current) {
+    const nextHead = current.next;
+    current.next = prev;
+    prev = current;
+    current = nextHead;
+  }
+
+  let maxSum = 0
+  let first: ListNode | null = head;
+  let second = prev;
+
+  while (second) {
+    maxSum = Math.max(maxSum, first!.val + second.val);
+    first = first!.next;
+    second = second.next
+  }
+  return maxSum
+}
+
+/* Test Cases */
+const test1 = buildList([5,4,2,1]);
+console.log((pairSum(test1)));
+
+const test2 = buildList([4,2,2,3]);
+console.log((pairSum(test2)));
