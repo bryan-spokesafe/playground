@@ -46,8 +46,50 @@ function maxDepth(root: TreeNode | null): number {
   return 1 + Math.max(leftDepth, rightDepth)
 }
 
-const tree1 = buildTree([3,9,20,null,null,15,7])
-console.log(maxDepth(tree1));
+// const tree1 = buildTree([3,9,20,null,null,15,7])
+// console.log(maxDepth(tree1));
 
-const tree2 = buildTree([1,null,2]);
-console.log(maxDepth(tree2));
+// const tree2 = buildTree([1,null,2]);
+// console.log(maxDepth(tree2));
+
+
+/* Problem 2 */
+function leafSimilar(root1: TreeNode | null, root2: TreeNode | null): boolean {
+
+  const leaves1: number[] = [];
+  const leaves2: number[] = [];
+
+  dfs(root1, leaves1);
+  dfs(root2, leaves2);
+
+  if (leaves1.length !== leaves2.length) return false;
+
+  for (let i = 0; i < leaves1.length; i++){
+    if (leaves1[i] !== leaves2[i]) return false
+  }
+
+  return true
+}
+
+function dfs(node: TreeNode | null, leaves: number[]) {
+  if (!node) return
+
+  if (!node.left && !node.right) {
+    leaves.push(node.val);
+  }
+  
+  dfs(node.left, leaves);
+  dfs(node.right, leaves);
+}
+
+
+const tree1 = buildTree([
+  3,5,1,6,2,9,8,null,null,7,4
+]);
+
+const tree2 = buildTree([
+  3,5,1,6,7,4,2,null,null,null,null,null,null,9,8
+]);
+
+console.log(leafSimilar(tree1, tree2));
+// expected: true
