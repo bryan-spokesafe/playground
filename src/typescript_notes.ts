@@ -117,22 +117,40 @@ const blogFetch: BlogResponse = {
   isError: false,
 };
 
-
 //async functions
 function wait(duration: number): Promise<string> {
-  return new Promise<string>(resolve => {
-    setTimeout(() => resolve("HI"), duration)
-  }) 
+  return new Promise<string>((resolve) => {
+    setTimeout(() => resolve("HI"), duration);
+  });
 }
 
-wait(1000).then(value => {
-  console.log(value.length)
-})
+wait(1000).then((value) => {
+  console.log(value.length);
+});
 
 async function wait2(duration: number) {
   return await fetch("something");
 }
 
-wait2(1000).then(value => {
-  console.log(value.json())
-})
+wait2(1000).then((value) => {
+  console.log(value.json());
+});
+
+
+//Type Predicate Example
+const PRIORITIES = ["High", "Medium", "Low"] as const;
+type Priority = (typeof PRIORITIES)[number]
+type Todo =  {
+  title: string
+  description: string
+}
+
+function func(todo: Todo) {
+  if(isPriority(todo.description)){
+    console.log(todo.description)
+  }
+}
+
+function isPriority(description: string): description is Priority {
+  return PRIORITIES.includes(description as Priority) 
+}
