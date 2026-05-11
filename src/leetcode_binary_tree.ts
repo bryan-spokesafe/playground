@@ -38,18 +38,16 @@ function buildTree(values: Array<number | null>): TreeNode | null {
 
 /* Problem 1 */
 function maxDepth(root: TreeNode | null): number {
-  if (!root) return 0
+  if (!root) return 0;
 
   let leftDepth = maxDepth(root.left);
   let rightDepth = maxDepth(root.right);
 
-  return 1 + Math.max(leftDepth, rightDepth)
+  return 1 + Math.max(leftDepth, rightDepth);
 }
-
 
 /* Problem 2 */
 function leafSimilar(root1: TreeNode | null, root2: TreeNode | null): boolean {
-
   const leaves1: number[] = [];
   const leaves2: number[] = [];
 
@@ -58,21 +56,21 @@ function leafSimilar(root1: TreeNode | null, root2: TreeNode | null): boolean {
 
   if (leaves1.length !== leaves2.length) return false;
 
-  for (let i = 0; i < leaves1.length; i++){
-    if (leaves1[i] !== leaves2[i]) return false
+  for (let i = 0; i < leaves1.length; i++) {
+    if (leaves1[i] !== leaves2[i]) return false;
   }
 
-  return true
+  return true;
 }
 
 /* helper function to Problem 2 */
 function dfs_leaf(node: TreeNode | null, leaves: number[]) {
-  if (!node) return
+  if (!node) return;
 
   if (!node.left && !node.right) {
     leaves.push(node.val);
   }
-  
+
   dfs_leaf(node.left, leaves);
   dfs_leaf(node.right, leaves);
 }
@@ -80,15 +78,37 @@ function dfs_leaf(node: TreeNode | null, leaves: number[]) {
 /* Problem 3 */
 function goodNodes(root: TreeNode | null): number {
   function dfs(node: TreeNode | null, maxSoFar: number): number {
-    if (!node) return 0
+    if (!node) return 0;
     const isGood = node.val >= maxSoFar;
     const newMax = Math.max(node.val, maxSoFar);
 
     const rightGood = dfs(node.right, newMax);
-    const leftGood = dfs(node.left, newMax)
+    const leftGood = dfs(node.left, newMax);
 
-    return (isGood ? 1 : 0) + leftGood + rightGood
+    return (isGood ? 1 : 0) + leftGood + rightGood;
   }
-  return dfs(root, -Infinity)
+  return dfs(root, -Infinity);
 }
 
+function pathSum(root: TreeNode | null, targetSum: number): number {
+  if (!root) return 0;
+
+  return (
+    countFromNode(root, targetSum) +
+    pathSum(root.left, targetSum) +
+    pathSum(root.right, targetSum)
+  );
+}
+
+function countFromNode(node: TreeNode | null, remaining: number) {
+  if (!node) return 0;
+
+  let count = 0;
+
+  if (node.val === remaining) count++;
+
+  count += countFromNode(node.left, remaining - node.val);
+  count += countFromNode(node.right, remaining - node.val);
+
+  return count;
+}
