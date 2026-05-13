@@ -112,3 +112,18 @@ function countFromNode(node: TreeNode | null, remaining: number) {
 
   return count;
 }
+
+function longestZigZag(root: TreeNode | null) {
+  let maxLength = 0
+  function dfs(node: TreeNode | null, goLeftLength: number, goRightLength: number) {
+    if (!node) return;
+
+    maxLength = Math.max(maxLength, goLeftLength, goRightLength)
+
+    dfs(node.left, goRightLength + 1, 0);
+    dfs(node.right, 0, goLeftLength + 1)
+  }
+
+  dfs(root, 0, 0)
+  return maxLength
+}
