@@ -127,3 +127,38 @@ function longestZigZag(root: TreeNode | null) {
   dfs(root, 0, 0)
   return maxLength
 }
+
+function lowestCommonAncestor(root: TreeNode | null, p: TreeNode | null, q: TreeNode | null): TreeNode | null {
+  if (!root || root == p || root == q) return root;
+
+  const left = lowestCommonAncestor(root.left, p, q);
+  const right = lowestCommonAncestor(root.right, p, q);
+
+  if (left && right) { 
+    return root;
+  }
+
+  return left || right
+}
+
+function findNode(root: TreeNode | null, val: number): TreeNode | null {
+  if(!root) return null;
+
+  if(root.val === val) return root;
+
+  return findNode(root.left, val) || findNode(root.right, val)
+}
+
+const tree = buildTree([3, 5, 1, 6, 2, 0, 8, null, null, 7, 4]);
+
+const p1 = findNode(tree, 5);
+const q1 = findNode(tree, 1);
+
+console.log(lowestCommonAncestor(tree, p1, q1)?.val);
+// expected: 3
+
+const p2 = findNode(tree, 5);
+const q2 = findNode(tree, 4);
+
+console.log(lowestCommonAncestor(tree, p2, q2)?.val);
+// expected: 5
